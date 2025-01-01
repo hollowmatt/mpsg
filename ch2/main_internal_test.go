@@ -35,6 +35,10 @@ func TestGreet(t *testing.T) {
 			lang: "vi",
 			want: "Xin chào Thế Giới",
 		},
+		"Akkadian": {
+			lang: "akk",
+			want: `unsupported language: "akk"`,
+		},
 	}
 
 	//range over all scenarios
