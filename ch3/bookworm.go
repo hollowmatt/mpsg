@@ -30,13 +30,14 @@ func loadBookworms(filePath string) ([]Bookworm, error) {
 }
 
 func findCommonBooks(bookworms []Bookworm) []Book {
-	return nil
-	// var commonBooks []Book
-	// for book, count := range count {
-	// 	if count == uint(len(bookworms)) {
-	// 		commonBooks = append(commonBooks, book)
-	// 	}
-	// }
+	booksOnShelves := booksCount(bookworms)
+	var commonBooks []Book
+	for book, count := range booksOnShelves {
+		if count > 1 {
+			commonBooks = append(commonBooks, book)
+		}
+	}
+	return commonBooks
 }
 
 func booksCount(bookworms []Bookworm) map[Book]uint {

@@ -14,4 +14,6 @@ func main() {
 	fmt.Println(bookworms)
 	bookCount := booksCount(bookworms)
 	fmt.Println(bookCount)
+	commonBooks := findCommonBooks(bookworms)
+	fmt.Println(commonBooks)
 }
