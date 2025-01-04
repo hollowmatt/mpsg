@@ -2,6 +2,7 @@ package main
 
 import (
 	"encoding/json"
+	"fmt"
 	"os"
 )
 
@@ -30,5 +31,27 @@ func loadBookworms(filePath string) ([]Bookworm, error) {
 }
 
 func findCommonBooks(bookworms []Bookworm) []Book {
-	return nil
-)
+	booksOnShelves := booksCount(bookworms)
+	var commonBooks []Book
+	for book, count := range booksOnShelves {
+		if count > 1 {
+			commonBooks = append(commonBooks, book)
+		}
+	}
+	return commonBooks
+}
+
+func booksCount(bookworms []Bookworm) map[Book]uint {
+	count := make(map[Book]uint)
+	for _, bookworm := range bookworms {
+		for _, book := range bookworm.Books {
+			count[book]++
+		}
+	}
+	return count
+}
+func displayBooks(books []Book) {
+	for _, book := range books {
+		fmt.Printf("%s by %s\n", book.Title, book.Author)
+	}
+}

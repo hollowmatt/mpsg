@@ -89,3 +89,82 @@ func equalBooks(books, target []Book) bool {
 	}
 	return true
 }
+
+func equalBooksCount(t *testing.T, got, want map[Book]uint) bool {
+	t.Helper()
+
+	if len(got) != len(want) {
+		return false
+	}
+
+	for book, targetCount := range want {
+		count, ok := got[book]
+		if !ok || targetCount != count {
+			return false
+		}
+	}
+
+	return true
+}
+
+func TestBooksCount(t *testing.T) {
+	type testCase struct {
+		bookworms []Bookworm
+		want      map[Book]uint
+	}
+
+	tests := map[string]testCase{
+		"nominal use case": {
+			bookworms: []Bookworm{
+				{Name: "Fadi", Books: []Book{handmaidsTale, theBellJar}},
+				{Name: "Peggy", Books: []Book{oryxAndCrake, handmaidsTale, janeEyre}},
+			},
+			want: map[Book]uint{handmaidsTale: 2, oryxAndCrake: 1, theBellJar: 1, janeEyre: 1},
+		},
+		"no bookworms": {
+			bookworms: []Bookworm{},
+			want:      map[Book]uint{},
+		},
+	}
+	for name, tc := range tests {
+		t.Run(name, func(t *testing.T) {
+			got := booksCount(tc.bookworms)
+			if !equalBooksCount(t, got, tc.want) {
+				t.Fatalf("different result: got %v, expected %v", got, tc.want)
+			}
+		})
+	}
+}
+
+func TestFindCommonBooks(t *testing.T) {
+	type testCase struct {
+		bookworms []Bookworm
+		want      []Book
+	}
+
+	tests := map[string]testCase{
+		"no common books": {
+			bookworms: []Bookworm{
+				{Name: "Fadi", Books: []Book{handmaidsTale, theBellJar}},
+				{Name: "Peggy", Books: []Book{oryxAndCrake, janeEyre}},
+			},
+			want: nil,
+		},
+		"one common book": {
+			bookworms: []Bookworm{
+				{Name: "Fadi", Books: []Book{handmaidsTale, theBellJar}},
+				{Name: "Peggy", Books: []Book{oryxAndCrake, handmaidsTale, janeEyre}},
+			},
+			want: []Book{handmaidsTale},
+		},
+	}
+
+	for name, tc := range tests {
+		t.Run(name, func(t *testing.T) {
+			got := findCommonBooks(tc.bookworms)
+			if !equalBooks(got, tc.want) {
+				t.Fatalf("different result: got %v, expected %v", got, tc.want)
+			}
+		})
+	}
+}
