@@ -12,6 +12,6 @@ func main() {
 		os.Exit(1)
 	}
 	fmt.Println(bookworms)
-	bookCount := bookCount(bookworms)
+	bookCount := booksCount(bookworms)
 	fmt.Println(bookCount)
 }

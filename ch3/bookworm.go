@@ -39,7 +39,7 @@ func findCommonBooks(bookworms []Bookworm) []Book {
 	// }
 }
 
-func bookCount(bookworms []Bookworm) map[Book]uint {
+func booksCount(bookworms []Bookworm) map[Book]uint {
 	count := make(map[Book]uint)
 	for _, bookworm := range bookworms {
 		for _, book := range bookworm.Books {
