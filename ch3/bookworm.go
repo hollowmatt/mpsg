@@ -2,6 +2,7 @@ package main
 
 import (
 	"encoding/json"
+	"fmt"
 	"os"
 )
 
@@ -48,4 +49,9 @@ func booksCount(bookworms []Bookworm) map[Book]uint {
 		}
 	}
 	return count
+}
+func displayBooks(books []Book) {
+	for _, book := range books {
+		fmt.Printf("%s by %s\n", book.Title, book.Author)
+	}
 }
