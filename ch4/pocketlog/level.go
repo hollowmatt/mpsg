@@ -1,6 +1,15 @@
 package pocketlog
 
-import "fmt"
+import (
+	"fmt"
+	"io"
+	"os"
+)
+
+var (
+	Stdout io.Writer = os.Stdout
+	Stderr io.Writer = os.Stderr
+)
 
 // used to represent the log levels
 type Level byte
@@ -19,11 +28,16 @@ const (
 )
 
 func (l *Logger) Debugf(format string, args ...any) {
+	// making sure we can write to the output
+	if l.output == nil {
+		l.output = Stdout
+	}
+
 	if l.threshold > LevelDebug {
 		return
 	}
 
-	_, _ = fmt.Printf("DEBUG: "+format+"\n", args...)
+	_, _ = fmt.Fprintf(l.output, format, args...)
 }
 
 func (l *Logger) Infof(format string, args ...any) {
