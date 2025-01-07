@@ -1,6 +1,15 @@
 package pocketlog
 
-import "fmt"
+import (
+	"fmt"
+	"io"
+	"os"
+)
+
+var (
+	Stdout io.Writer = os.Stdout
+	Stderr io.Writer = os.Stderr
+)
 
 // used to represent the log levels
 type Level byte
@@ -23,7 +32,7 @@ func (l *Logger) Debugf(format string, args ...any) {
 		return
 	}
 
-	_, _ = fmt.Printf("DEBUG: "+format+"\n", args...)
+	l.logf("DEBUG: "+format, args...)
 }
 
 func (l *Logger) Infof(format string, args ...any) {
@@ -31,7 +40,7 @@ func (l *Logger) Infof(format string, args ...any) {
 		return
 	}
 
-	_, _ = fmt.Printf("INFO: "+format+"\n", args...)
+	l.logf("INFO: "+format, args...)
 }
 
 func (l *Logger) Warnf(format string, args ...any) {
@@ -39,7 +48,7 @@ func (l *Logger) Warnf(format string, args ...any) {
 		return
 	}
 
-	_, _ = fmt.Printf("WARN: "+format+"\n", args...)
+	l.logf("WARN: "+format, args...)
 }
 
 func (l *Logger) Errorf(format string, args ...any) {
@@ -47,7 +56,7 @@ func (l *Logger) Errorf(format string, args ...any) {
 		return
 	}
 
-	_, _ = fmt.Printf("ERROR: "+format+"\n", args...)
+	l.logf("ERROR: "+format, args...)
 }
 
 func (l *Logger) Fatalf(format string, args ...any) {
@@ -55,5 +64,13 @@ func (l *Logger) Fatalf(format string, args ...any) {
 		return
 	}
 
-	_, _ = fmt.Printf("FATAL: "+format+"\n", args...)
+	l.logf("FATAL: "+format, args...)
+}
+
+func (l *Logger) logf(format string, args ...any) {
+	//If no output specified, use Stdout
+	if l.output == nil {
+		l.output = Stdout
+	}
+	_, _ = fmt.Fprintf(l.output, format+"\n", args...)
 }
