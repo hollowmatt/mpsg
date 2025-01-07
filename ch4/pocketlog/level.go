@@ -28,62 +28,49 @@ const (
 )
 
 func (l *Logger) Debugf(format string, args ...any) {
-	// making sure we can write to the output
-	if l.output == nil {
-		l.output = Stdout
-	}
-
 	if l.threshold > LevelDebug {
 		return
 	}
 
-	_, _ = fmt.Fprintf(l.output, "DUBUG: "+format, args...)
+	l.logf("DEBUG: "+format, args...)
 }
 
 func (l *Logger) Infof(format string, args ...any) {
-	if l.output == nil {
-		l.output = Stdout
-	}
-
 	if l.threshold > LevelInfo {
 		return
 	}
 
-	_, _ = fmt.Fprintf(l.output, "INFO: "+format, args...)
+	l.logf("INFO: "+format, args...)
 }
 
 func (l *Logger) Warnf(format string, args ...any) {
-	if l.output == nil {
-		l.output = Stdout
-	}
-
 	if l.threshold > LevelWarn {
 		return
 	}
 
-	_, _ = fmt.Fprintf(l.output, "WARN: "+format+"\n", args...)
+	l.logf("WARN: "+format, args...)
 }
 
 func (l *Logger) Errorf(format string, args ...any) {
-	if l.output == nil {
-		l.output = Stderr
-	}
-
 	if l.threshold > LevelError {
 		return
 	}
 
-	_, _ = fmt.Fprintf(l.output, "ERROR: "+format+"\n", args...)
+	l.logf("ERROR: "+format, args...)
 }
 
 func (l *Logger) Fatalf(format string, args ...any) {
-	if l.output == nil {
-		l.output = Stderr
-	}
-
 	if l.threshold > LevelFatal {
 		return
 	}
 
-	_, _ = fmt.Fprintf(l.output, "FATAL: "+format+"\n", args...)
+	l.logf("FATAL: "+format, args...)
+}
+
+func (l *Logger) logf(format string, args ...any) {
+	//If no output specified, use Stdout
+	if l.output == nil {
+		l.output = Stdout
+	}
+	_, _ = fmt.Fprintf(l.output, format+"\n", args...)
 }
