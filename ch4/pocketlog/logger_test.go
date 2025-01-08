@@ -2,11 +2,9 @@ package pocketlog_test
 
 import (
 	"hollowmatt/logger/pocketlog"
-	"io"
-	"os"
 )
 
 func ExampleLogger_Debugf() {
-	debugLogger := pocketlog.New(pocketlog.LevelDebug, io.Writer(os.Stdout))
+	debugLogger := pocketlog.New(pocketlog.LevelDebug)
 	debugLogger.Debugf("Hello %s", "logger")
 }
